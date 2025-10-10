@@ -1,3 +1,4 @@
+'use client';
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -14,6 +15,23 @@ export function LoginForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"div">) {
+  const formOnclick = (e: React.FormEvent) => {
+    e.preventDefault();
+    fetch("/api/auth/login", {
+      method: "POST",
+      headers: {},
+      body: JSON.stringify({
+        nombre: e.target.email.value,
+        cve: e.target.password.value,
+      }),
+    }).then(async (res) => {
+      if (res.ok) {
+        window.location.href = "/dashboard";
+      } else {
+        alert("Error al iniciar sesión");
+      }
+    });
+  }
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
@@ -21,13 +39,13 @@ export function LoginForm({
           <CardTitle className="text-2xl">FIF Asesorías</CardTitle>
         </CardHeader>
         <CardContent className="pt-18">
-          <form>
+          <form onSubmit={formOnclick} className="grid gap-6">
             <div className="flex flex-col gap-6">
               <div className="grid gap-2">
                 <Label htmlFor="email">Email</Label>
                 <Input
                   id="email"
-                  type="email"
+                  type="text"
                   placeholder="m@ejemplo.com"
                   required
                 />
