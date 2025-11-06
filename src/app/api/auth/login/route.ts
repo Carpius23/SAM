@@ -13,8 +13,9 @@ export async function POST(req: NextRequest) {
     });
 
     if (admin) {
-      const adminName = (admin.name ?? "").toString().trim().toLowerCase();
-      if (adminName === nombreNorm) {
+      // const adminName = (admin.name ?? "").toString().trim().toLowerCase();
+      const cveAdmin = (admin.cveAdmin ?? "").toString().trim();
+      if (cveAdmin === cveNorm) {
         const payload = {
           id: admin.idAdmin,
           cveAdmin: admin.cveAdmin,
